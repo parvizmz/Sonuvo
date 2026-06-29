@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parviz Mirzaei — A Launch Strategy for Sonuvo</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Inter:wght@300;400;500;600&display=swap');
+
+:root{
+  --bg:#0a0d0b;
+  --bg2:#0e1310;
+  --bone:#ECE7DA;
+  --bone-dim:rgba(236,231,218,0.60);
+  --muted:rgba(236,231,218,0.38);
+  --emerald:#2f9468;
+  --emerald-d:#123127;
+  --ember:#E5533B;
+  --ember-l:#ff6f53;
+  --line:rgba(236,231,218,0.12);
+  --line-s:rgba(236,231,218,0.06);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--bone);font-family:'Inter',sans-serif;overflow-x:hidden;cursor:default;-webkit-font-smoothing:antialiased;}
+::selection{background:var(--ember);color:#0a0d0b;}
+
+.grain{position:fixed;inset:0;z-index:2000;pointer-events:none;opacity:0.06;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+.cursor{position:fixed;top:0;left:0;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:var(--ember);
+  box-shadow:0 0 14px rgba(229,83,59,0.6);pointer-events:none;z-index:3000;
+  transition:width .35s cubic-bezier(.19,1,.22,1),height .35s cubic-bezier(.19,1,.22,1),background .35s ease;}
+.cursor.big{width:48px;height:48px;margin:-24px 0 0 -24px;background:rgba(229,83,59,0.14);box-shadow:none;border:1px solid rgba(229,83,59,0.5);}
+@media(pointer:coarse){.cursor{display:none;}}
+
+#prog{position:fixed;top:0;left:0;width:100%;height:2px;z-index:1500;background:rgba(236,231,218,0.05);}
+#progFill{height:100%;width:0;background:linear-gradient(90deg,var(--emerald),var(--ember));transition:width .12s linear;}
+
+#nav{position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:1200;display:flex;flex-direction:column;gap:18px;align-items:flex-end;}
+.dot{display:flex;align-items:center;gap:10px;cursor:pointer;opacity:.45;transition:opacity .4s ease;}
+.dot .lbl{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--bone-dim);opacity:0;transform:translateX(6px);transition:all .35s ease;white-space:nowrap;}
+.dot .mark{width:16px;height:1px;background:var(--bone-dim);transition:all .4s ease;}
+.dot:hover{opacity:1;}.dot:hover .lbl{opacity:1;transform:translateX(0);}
+.dot.active{opacity:1;}
+.dot.active .mark{width:32px;background:var(--ember);}
+.dot.active .lbl{opacity:1;transform:translateX(0);color:var(--ember-l);}
+@media(max-width:860px){#nav{display:none;}}
+
+section{position:relative;width:100%;padding:15vh 8vw;min-height:100vh;display:flex;align-items:center;}
+.wrap{width:100%;max-width:1080px;margin:0 auto;}
+
+.eyebrow{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--ember);display:flex;align-items:center;gap:14px;margin-bottom:30px;font-weight:500;}
+.eyebrow::before{content:'';width:30px;height:1px;background:var(--ember);}
+
+.serif{font-family:'Newsreader',serif;font-weight:400;}
+.ital{font-family:'Newsreader',serif;font-style:italic;font-weight:400;}
+h2{font-family:'Newsreader',serif;font-weight:300;line-height:1.02;letter-spacing:-.01em;font-size:clamp(40px,6.6vw,92px);margin-bottom:30px;color:var(--bone);}
+h2 .ital{font-style:italic;}
+.ember-t{color:var(--ember);}.emerald-t{color:var(--emerald);}
+.grad{background:linear-gradient(100deg,var(--ember),var(--ember-l) 55%,var(--emerald));-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+.lead{font-family:'Newsreader',serif;font-style:italic;font-weight:300;font-size:clamp(21px,2.7vw,32px);line-height:1.4;color:var(--bone);max-width:780px;margin-bottom:34px;}
+p.body{font-size:15.5px;font-weight:300;line-height:1.92;color:var(--bone-dim);max-width:680px;margin-bottom:18px;}
+p.body strong{color:var(--bone);font-weight:500;}
+
+.ghostNum{position:absolute;font-family:'Newsreader',serif;font-weight:300;font-size:clamp(120px,24vw,340px);line-height:.8;color:rgba(236,231,218,0.035);right:5vw;top:9vh;user-select:none;pointer-events:none;letter-spacing:-.02em;}
+
+/* generic reveal */
+.r{opacity:0;transform:translateY(28px);filter:blur(5px);transition:opacity .95s cubic-bezier(.19,1,.22,1),transform .95s cubic-bezier(.19,1,.22,1),filter .95s ease;}
+.r.in{opacity:1;transform:none;filter:blur(0);}
+.r2{transition-delay:.1s;}.r3{transition-delay:.2s;}.r4{transition-delay:.32s;}.r5{transition-delay:.44s;}
+
+/* ═════ HERO ═════ */
+#hero{min-height:100vh;align-items:center;overflow:hidden;
+  background:
+    radial-gradient(120% 90% at 78% 8%, rgba(47,148,104,0.22), transparent 52%),
+    radial-gradient(90% 70% at 0% 100%, rgba(229,83,59,0.12), transparent 55%),
+    linear-gradient(165deg,#0f1a14 0%, #0a0d0b 58%);}
+#hero .wrap{max-width:1200px;}
+.heroTop{position:absolute;top:5vh;left:8vw;right:8vw;display:flex;justify-content:space-between;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);}
+.crest{display:flex;align-items:center;gap:14px;margin-bottom:42px;opacity:0;transform:translateY(-10px);transition:all 1.1s ease .2s;}
+.crest.go{opacity:1;transform:none;}
+.crest .ring{width:40px;height:40px;border:1px solid var(--emerald);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Newsreader',serif;font-style:italic;font-size:16px;color:var(--emerald);}
+.crest .ct{font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--bone-dim);line-height:1.7;}
+
+#hero h1{font-family:'Newsreader',serif;font-weight:300;line-height:1.08;letter-spacing:-.015em;font-size:clamp(46px,9vw,132px);}
+.wline{display:block;overflow:visible;padding:0.04em 0;}
+.wink{display:inline-block;clip-path:inset(-0.2em 100% -0.36em -0.05em);transition:clip-path 1.25s cubic-bezier(.76,0,.24,1);}
+#hero.draw .wline:nth-child(1) .wink{clip-path:inset(-0.2em -0.05em -0.36em -0.05em);transition-delay:.25s;}
+#hero.draw .wline:nth-child(2) .wink{clip-path:inset(-0.2em -0.05em -0.36em -0.05em);transition-delay:.95s;}
+.scriptword{position:relative;font-family:'Newsreader',serif;font-style:italic;font-weight:400;color:var(--ember);font-size:1.0em;padding:0 .03em;}
+.scribble{position:absolute;left:-4%;bottom:-0.3em;width:108%;height:0.5em;overflow:visible;}
+.scribble path{stroke:var(--ember);stroke-width:3;fill:none;stroke-linecap:round;stroke-dasharray:440;stroke-dashoffset:440;transition:stroke-dashoffset 1s ease;}
+#hero.draw .scribble path{stroke-dashoffset:0;transition-delay:1.7s;}
+#hero.draw .scribble path.p2{transition-delay:2.05s;}
+
+.heroSub{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:30px;margin-top:54px;opacity:0;transform:translateY(18px);transition:all 1s ease 1.2s;}
+.heroSub.go{opacity:1;transform:none;}
+.heroSub .s1{font-family:'Newsreader',serif;font-style:italic;font-weight:300;font-size:clamp(17px,2vw,23px);color:var(--bone-dim);max-width:480px;line-height:1.5;}
+.heroSub .s2{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-align:right;line-height:2;}
+.scrollCue{position:absolute;bottom:5vh;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);}
+.scrollLine{width:1px;height:38px;background:linear-gradient(var(--ember),transparent);animation:pulse 2.2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:.25;transform:scaleY(.7);}50%{opacity:1;transform:scaleY(1);}}
+
+/* marquee */
+.marqueeWrap{overflow:hidden;padding:18px 0;background:var(--bg2);border-top:1px solid var(--line-s);border-bottom:1px solid var(--line-s);}
+.marquee{display:flex;width:max-content;animation:scrollX 38s linear infinite;}
+.marquee span{font-family:'Newsreader',serif;font-weight:300;font-style:italic;font-size:clamp(20px,3vw,34px);color:var(--bone);padding:0 22px;display:flex;align-items:center;gap:22px;white-space:nowrap;}
+.marquee span::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--ember);}
+@keyframes scrollX{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* INTRO */
+#intro{background:linear-gradient(180deg,#0a0d0b,#0c110e);}
+#intro .grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;}
+@media(max-width:860px){#intro .grid{grid-template-columns:1fr;gap:34px;}}
+.bigName{font-family:'Newsreader',serif;font-weight:300;font-size:clamp(36px,5vw,68px);line-height:.98;letter-spacing:-.01em;margin-bottom:12px;}
+.bigName .ital{font-style:italic;}
+.role{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--ember);margin-bottom:30px;}
+.statRow{display:flex;gap:44px;margin-top:40px;border-top:1px solid var(--line);padding-top:28px;}
+.stat .n{font-family:'Newsreader',serif;font-weight:300;font-size:42px;color:var(--emerald);line-height:1;}
+.stat .t{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:8px;}
+
+/* WORK */
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:42px;}
+@media(max-width:860px){.tiles{grid-template-columns:1fr;}}
+.tile{position:relative;border:1px solid var(--line);background:linear-gradient(160deg,rgba(236,231,218,0.04),rgba(236,231,218,0));padding:32px 28px;min-height:230px;display:flex;flex-direction:column;justify-content:space-between;text-decoration:none;color:inherit;overflow:hidden;transition:border-color .45s ease,transform .55s cubic-bezier(.19,1,.22,1);}
+.tile::after{content:'';position:absolute;left:0;bottom:0;height:0;width:100%;background:linear-gradient(180deg,rgba(47,148,104,0.16),rgba(229,83,59,0.10));transition:height .55s cubic-bezier(.19,1,.22,1);z-index:0;}
+.tile>*{position:relative;z-index:1;}
+.tile:hover{transform:translateY(-5px);border-color:var(--ember);}
+.tile:hover::after{height:100%;}
+.tile:hover .arrow{transform:translate(4px,-4px);color:var(--ember-l);}
+.tileTop{display:flex;justify-content:space-between;align-items:flex-start;}
+.tileNo{font-size:10px;letter-spacing:.18em;color:var(--muted);}
+.arrow{font-size:20px;color:var(--bone);transition:all .45s ease;line-height:1;}
+.tileTag{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ember);margin-bottom:auto;}
+.tileTitle{font-family:'Newsreader',serif;font-weight:300;font-size:clamp(23px,2.6vw,30px);line-height:1.02;margin-bottom:10px;color:var(--bone);}
+.tileDesc{font-size:13px;font-weight:300;color:var(--bone-dim);line-height:1.65;}
+
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px;}
+.chip{font-size:11px;letter-spacing:.05em;color:var(--bone-dim);border:1px solid var(--line);border-radius:40px;padding:9px 18px;transition:all .35s ease;}
+.chip:hover{border-color:var(--ember);color:var(--ember-l);}
+
+/* OPPORTUNITY (moody emerald) */
+#opportunity{background:
+  radial-gradient(120% 100% at 15% 20%, rgba(47,148,104,0.22), transparent 55%),
+  radial-gradient(90% 80% at 100% 100%, rgba(18,49,39,0.6), transparent 60%),
+  linear-gradient(160deg,#0c1712,#0a0d0b);}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:38px;}
+@media(max-width:680px){.split{grid-template-columns:1fr;}}
+.scard{border:1px solid var(--line);padding:28px;background:rgba(10,13,11,0.4);backdrop-filter:blur(2px);transition:border-color .4s ease;}
+.scard:hover{border-color:var(--ember);}
+.scard .k{font-size:10px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px;}
+.scard.bad .k{color:var(--ember);}
+.scard.good .k{color:var(--emerald);}
+.scard .v{font-size:14px;font-weight:300;line-height:1.7;color:var(--bone-dim);}
+.scard .v b{color:var(--bone);font-weight:500;}
+
+/* STRATEGY */
+#strategy{background:linear-gradient(180deg,#0a0d0b,#0d0f0e);}
+.aud{display:grid;grid-template-columns:repeat(4,1fr);margin-top:42px;border-top:1px solid var(--line);}
+@media(max-width:860px){.aud{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:480px){.aud{grid-template-columns:1fr;}}
+.audCell{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:28px 24px 30px;transition:background .4s ease;}
+.audCell:hover{background:rgba(47,148,104,0.05);}
+.audCell .k{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ember);margin-bottom:14px;}
+.audCell .v{font-size:13.5px;font-weight:300;line-height:1.65;color:var(--bone-dim);}
+.refBox{margin-top:46px;border-left:2px solid var(--ember);padding:6px 0 6px 28px;}
+.refBox .q{font-family:'Newsreader',serif;font-style:italic;font-weight:300;font-size:clamp(20px,2.5vw,29px);line-height:1.48;color:var(--bone);max-width:740px;}
+.refBox .src{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:16px;}
+
+/* LAUNCH */
+#launch{background:
+  radial-gradient(90% 70% at 100% 0%, rgba(229,83,59,0.10), transparent 55%),
+  linear-gradient(180deg,#0a0d0b,#0c110e);}
+.timeline{margin-top:54px;position:relative;}
+.tlLine{position:absolute;left:0;top:6px;bottom:6px;width:2px;background:var(--line);}
+.tlFill{position:absolute;left:0;top:0;width:100%;height:0;background:linear-gradient(var(--emerald),var(--ember));transition:height .18s linear;}
+.phase{position:relative;padding:0 0 56px 56px;}
+.phase:last-child{padding-bottom:0;}
+.phase .node{position:absolute;left:-9px;top:3px;width:20px;height:20px;border-radius:50%;background:var(--bg);border:2px solid var(--line);transition:all .5s ease;}
+.phase.in .node{border-color:var(--ember);box-shadow:0 0 0 4px rgba(229,83,59,0.14);}
+.phaseHead{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:14px;}
+.phaseNo{font-family:'Newsreader',serif;font-weight:300;font-size:clamp(34px,5vw,62px);line-height:1;color:rgba(47,148,104,0.28);letter-spacing:-.01em;}
+.phaseName{font-family:'Newsreader',serif;font-weight:400;font-size:clamp(22px,2.7vw,34px);line-height:1;color:var(--bone);}
+.phaseWhen{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ember);}
+.phaseDesc{font-size:14.5px;font-weight:300;line-height:1.82;color:var(--bone-dim);max-width:620px;margin-bottom:18px;}
+.phaseDesc b{color:var(--bone);font-weight:500;}
+.chans{display:flex;flex-wrap:wrap;gap:8px;}
+.chan{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--bone-dim);border:1px solid var(--line);padding:6px 13px;border-radius:3px;transition:all .35s ease;}
+.chan:hover{border-color:var(--ember);color:var(--ember-l);}
+.alwaysOn{margin-top:14px;border:1px solid var(--line);background:rgba(47,148,104,0.05);padding:24px 28px;display:flex;gap:24px;align-items:center;flex-wrap:wrap;}
+.alwaysOn .ao-k{font-family:'Newsreader',serif;font-style:italic;font-size:18px;color:var(--emerald);white-space:nowrap;}
+.alwaysOn .ao-v{font-size:13.5px;font-weight:300;color:var(--bone-dim);line-height:1.7;}
+
+/* CLOSE */
+#close{text-align:center;flex-direction:column;justify-content:center;overflow:hidden;
+  background:
+    radial-gradient(80% 70% at 50% 120%, rgba(229,83,59,0.16), transparent 60%),
+    radial-gradient(70% 60% at 50% -10%, rgba(47,148,104,0.16), transparent 60%),
+    linear-gradient(160deg,#0c1712,#0a0d0b);}
+#close .wrap{max-width:920px;}
+.closeQuote{font-family:'Newsreader',serif;font-weight:300;font-size:clamp(30px,4.8vw,62px);line-height:1.28;color:var(--bone);margin:0 auto 22px;}
+.closeQuote .ital{font-style:italic;}
+.closeQuote .em1{color:var(--emerald);}.closeQuote .em2{color:var(--ember);}
+.closeSub{font-size:15px;font-weight:300;color:var(--bone-dim);max-width:560px;margin:0 auto 10px;line-height:1.8;}
+.sign{display:flex;gap:60px;justify-content:center;flex-wrap:wrap;margin-top:64px;text-align:left;}
+.sign .b{font-family:'Newsreader',serif;font-weight:400;font-size:18px;color:var(--bone);margin-bottom:6px;}
+.sign .m{font-size:11px;letter-spacing:.03em;color:var(--muted);line-height:1.9;}
+.sign a{color:var(--bone-dim);text-decoration:none;border-bottom:1px solid var(--line);transition:all .3s ease;}
+.sign a:hover{color:var(--ember-l);border-color:var(--ember);}
+
+footer{text-align:center;padding:34px;font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);background:#0a0d0b;border-top:1px solid var(--line-s);}
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="cursor" id="cursor"></div>
+<div id="prog"><div id="progFill"></div></div>
+
+<nav id="nav">
+  <div class="dot" data-t="hero"><span class="lbl">Index</span><span class="mark"></span></div>
+  <div class="dot" data-t="intro"><span class="lbl">Parviz</span><span class="mark"></span></div>
+  <div class="dot" data-t="work"><span class="lbl">Work</span><span class="mark"></span></div>
+  <div class="dot" data-t="opportunity"><span class="lbl">The Opening</span><span class="mark"></span></div>
+  <div class="dot" data-t="strategy"><span class="lbl">Strategy</span><span class="mark"></span></div>
+  <div class="dot" data-t="launch"><span class="lbl">The Launch</span><span class="mark"></span></div>
+  <div class="dot" data-t="close"><span class="lbl">Begin</span><span class="mark"></span></div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="heroTop"><span>Brand &amp; Launch Proposal</span><span>Sonuvo Lifestyle · 2026</span></div>
+  <div class="wrap">
+    <div class="crest">
+      <div class="ring">S</div>
+      <div class="ct">Sonuvo Lifestyle<br>Interior Design</div>
+    </div>
+    <h1>
+      <span class="wline"><span class="wink">Make them impossible</span></span>
+      <span class="wline"><span class="wink">to <span class="scriptword">ignore.<svg class="scribble" viewBox="0 0 200 24" preserveAspectRatio="none"><path d="M4 15 C 42 5, 82 23, 122 13 S 188 11, 196 17"/><path class="p2" d="M196 17 C 150 27, 70 7, 8 21"/></svg></span></span></span>
+    </h1>
+    <div class="heroSub">
+      <div class="s1">A launch strategy that turns a quietly beautiful studio into a brand people can't stop talking about — building toward the opening of its first store.</div>
+      <div class="s2">Prepared by Parviz Mirzaei<br>Creative Director &amp; Media Designer</div>
+    </div>
+  </div>
+  <div class="scrollCue"><span>Scroll</span><div class="scrollLine"></div></div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marqueeWrap">
+  <div class="marquee">
+    <span>Art Direction</span><span>Brand Storytelling</span><span>Content Creation</span><span>UGC Direction</span><span>Launch Strategy</span><span>Motion &amp; Film</span>
+    <span>Art Direction</span><span>Brand Storytelling</span><span>Content Creation</span><span>UGC Direction</span><span>Launch Strategy</span><span>Motion &amp; Film</span>
+  </div>
+</div>
+
+<!-- INTRO -->
+<section id="intro">
+  <span class="ghostNum">01</span>
+  <div class="wrap">
+    <div class="eyebrow r">Who you'd be working with</div>
+    <div class="grid">
+      <div>
+        <div class="bigName r r2">Parviz <span class="ital">Mirzaei</span></div>
+        <div class="role r r3">Creative Director · Media Designer</div>
+        <p class="lead r r3">I build the worlds brands live inside — and the campaigns that make people stop, feel, and remember.</p>
+        <div class="statRow r r4">
+          <div class="stat"><div class="n">8+</div><div class="t">Years directing<br>brands &amp; campaigns</div></div>
+          <div class="stat"><div class="n serif ital">∞</div><div class="t">Ideas turned<br>into recognition</div></div>
+        </div>
+      </div>
+      <div>
+        <p class="body r r3">For over eight years I've worked at the intersection of <strong>culture, art, fashion, design and technology</strong> — taking abstract ideas and turning them into visual worlds a brand can actually live in. As a creative director and media designer, I craft work that doesn't just look beautiful; it earns attention and builds recognition.</p>
+        <p class="body r r4">I turn concepts into narratives, and narratives into demand. That's the part most brands are missing.</p>
+        <p class="body r r5"><strong>Here's why this matters for Sonuvo.</strong> You've already done the hardest thing — you made work with a real point of view. But taste nobody sees is just a secret. The gap between beautiful design and a brand people obsess over isn't more product. It's <strong>direction, story, and the nerve to launch loud.</strong> That's exactly what I do.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work">
+  <span class="ghostNum">02</span>
+  <div class="wrap">
+    <div class="eyebrow r">Selected Work</div>
+    <h2 class="r r2">Proof, <span class="ital ember-t">not</span> promises.</h2>
+    <p class="body r r2">A short look at the kind of work I make — direction, content, and campaigns built to be felt. Open any of them.</p>
+    <div class="tiles">
+      <a class="tile r r2" href="https://www.instagram.com/boqche.collection" target="_blank" rel="noopener">
+        <div class="tileTop"><span class="tileNo">01 / Art Direction</span><span class="arrow">↗</span></div>
+        <div class="tileTag">Art Director &amp; Advisor</div>
+        <div>
+          <div class="tileTitle">Boqche Collection</div>
+          <div class="tileDesc">Art direction and creative advisory — building a cohesive visual identity across content and campaign.</div>
+        </div>
+      </a>
+      <a class="tile r r3" href="https://drive.google.com/drive/folders/1NJwrTMizm_PcrB4yYcgLQtxgxc-K7kjr" target="_blank" rel="noopener">
+        <div class="tileTop"><span class="tileNo">02 / Motion &amp; Film</span><span class="arrow">↗</span></div>
+        <div class="tileTag">Direction · Edit · Motion</div>
+        <div>
+          <div class="tileTitle">Selected Films</div>
+          <div class="tileDesc">A reel of video work — the format that sells movement, texture and feeling.</div>
+        </div>
+      </a>
+      <a class="tile r r4" href="https://parviz.work/" target="_blank" rel="noopener">
+        <div class="tileTop"><span class="tileNo">03 / Portfolio</span><span class="arrow">↗</span></div>
+        <div class="tileTag">Creative Direction</div>
+        <div>
+          <div class="tileTitle">parviz.work</div>
+          <div class="tileDesc">Selected projects spanning design, campaign and concept — the wider body of work behind the approach.</div>
+        </div>
+      </a>
+    </div>
+    <div class="chips r r3">
+      <span class="chip">Content creation</span>
+      <span class="chip">Working with UGC creators</span>
+      <span class="chip">Brand &amp; launch strategy</span>
+      <span class="chip">Art direction</span>
+      <span class="chip">Motion &amp; film</span>
+      <span class="chip">Storytelling that converts</span>
+    </div>
+  </div>
+</section>
+
+<!-- OPPORTUNITY -->
+<section id="opportunity">
+  <span class="ghostNum">03</span>
+  <div class="wrap">
+    <div class="eyebrow r">The Opening</div>
+    <h2 class="r r2">You're not unknown by <span class="ital grad">chance.</span></h2>
+    <p class="lead r r2">"The work already has the rarest thing in design — a real point of view. What it's missing is a stage."</p>
+    <p class="body r r3">The market is flooded with brands faking taste. Sonuvo has the real thing and is keeping it quiet. That's not a small problem — it's the <strong>entire opportunity.</strong> Design this considered either becomes a brand people seek out, or gets lost among a hundred lookalike homeware shops. The difference is never the product. It's whether someone is steering the narrative.</p>
+    <div class="split">
+      <div class="scard bad r r3"><div class="k">The risk of doing nothing</div><div class="v">Beautiful, considered, and <b>invisible.</b> Posting without a plan burns a year and the brand doesn't move — because nobody was steering it.</div></div>
+      <div class="scard good r r4"><div class="k">The opening to take</div><div class="v">A bold, intentional launch lets a young studio <b>punch far above its size</b> — and sets the foundation for the first store, and every shop after it.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STRATEGY -->
+<section id="strategy">
+  <span class="ghostNum">04</span>
+  <div class="wrap">
+    <div class="eyebrow r">The Strategy</div>
+    <h2 class="r r2">Bold gets <span class="ital ember-t">seen.</span><br>Story gets <span class="ital ember-t">kept.</span></h2>
+    <p class="body r r2">Before a single post goes live, we define exactly who this is for, what they need to feel, and where they already are. Then we give them something they can't scroll past — design with the volume turned up.</p>
+
+    <div class="aud">
+      <div class="audCell r r2"><div class="k">Who she is</div><div class="v">28–45, design-led, curates her space carefully. Buys fewer things — each one has to mean something.</div></div>
+      <div class="audCell r r3"><div class="k">Where she lives</div><div class="v">Instagram for emotion, TikTok for process and transformation, Pinterest for intent and discovery.</div></div>
+      <div class="audCell r r4"><div class="k">What she rejects</div><div class="v">Mass-produced décor, generic 'luxury' signaling, anything that feels like everyone else's.</div></div>
+      <div class="audCell r r5"><div class="k">What she seeks</div><div class="v">Objects and spaces with a point of view — pieces she wants to live with, and show off.</div></div>
+    </div>
+
+    <div class="refBox r r3">
+      <div class="q">Look at <span class="ember-t">Jacquemus.</span> A handbag becomes a giant on a beach. A show happens in a lavender field. They didn't win by spending the most — they won by being the boldest, most cinematic brand in the room. Small brands don't beat big budgets with caution. They beat them with nerve.</div>
+      <div class="src">Reference · Bold-luxury playbook</div>
+    </div>
+
+    <p class="body r r3" style="margin-top:40px;">That's the posture for Sonuvo: the depth of a real design philosophy, delivered with the confidence of a brand ten times its size. Quiet taste, loud entrance.</p>
+  </div>
+</section>
+
+<!-- LAUNCH -->
+<section id="launch">
+  <span class="ghostNum">05</span>
+  <div class="wrap">
+    <div class="eyebrow r">The Launch</div>
+    <h2 class="r r2">A campaign, <span class="ital ember-t">not</span> a calendar.</h2>
+    <p class="body r r2">Five phases engineered to build pressure, then release it — so the brand launches with an audience already waiting, and the first store opens to a crowd that already knows the name. Every step compounds the last.</p>
+
+    <div class="timeline">
+      <div class="tlLine"><div class="tlFill" id="tlFill"></div></div>
+
+      <div class="phase r">
+        <div class="node"></div>
+        <div class="phaseHead"><span class="phaseNo">01</span><span class="phaseName">The Whisper</span><span class="phaseWhen">Pre-launch · Wks 1–3</span></div>
+        <div class="phaseDesc">Before a single product post, we launch a <b>coming-soon landing page with email capture.</b> Mystery, not announcements — we build a waitlist and own those first-party emails so launch day doesn't start from zero. The brand stays hidden; the curiosity doesn't.</div>
+        <div class="chans"><span class="chan">Coming-soon site</span><span class="chan">Email waitlist</span><span class="chan">Teaser visuals</span></div>
+      </div>
+
+      <div class="phase r">
+        <div class="node"></div>
+        <div class="phaseHead"><span class="phaseNo">02</span><span class="phaseName">The World</span><span class="phaseWhen">Build · Wks 3–6</span></div>
+        <div class="phaseDesc">We establish Sonuvo's visual world and the content engine behind it — art direction, tone, and a steady drip of motion-first content. <b>UGC creators</b> begin styling the objects in real homes, so the brand feels lived-in and desired before it's even for sale.</div>
+        <div class="chans"><span class="chan">Content engine</span><span class="chan">UGC creators</span><span class="chan">Organic teasers</span><span class="chan">Motion &amp; film</span></div>
+      </div>
+
+      <div class="phase r">
+        <div class="node"></div>
+        <div class="phaseHead"><span class="phaseNo">03</span><span class="phaseName">The Noise</span><span class="phaseWhen">Reveal · Wks 6–9</span></div>
+        <div class="phaseDesc">The brand and its signature pieces are revealed — each its own moment. We turn on <b>paid ads on Meta</b> (retargeting the waitlist + lookalike audiences) and seed the objects with <b>nano and micro influencers on TikTok and Instagram.</b> Reach goes vertical; the brand stops being a secret.</div>
+        <div class="chans"><span class="chan">Meta paid ads</span><span class="chan">Nano &amp; micro influencers</span><span class="chan">TikTok</span><span class="chan">Brand reveal</span></div>
+      </div>
+
+      <div class="phase r">
+        <div class="node"></div>
+        <div class="phaseHead"><span class="phaseNo">04</span><span class="phaseName">The Drop</span><span class="phaseWhen">Launch · Wks 9–11</span></div>
+        <div class="phaseDesc">Everything converges. The waitlist gets the first invitation through <b>email marketing</b> built for urgency and exclusivity — early access, limited framing, a real reason to act now. Full social activation runs in parallel, turning all that attention into the first wave of sales.</div>
+        <div class="chans"><span class="chan">Email marketing</span><span class="chan">Early access</span><span class="chan">Urgency &amp; scarcity</span><span class="chan">Full activation</span></div>
+      </div>
+
+      <div class="phase r">
+        <div class="node"></div>
+        <div class="phaseHead"><span class="phaseNo">05</span><span class="phaseName">The Doors</span><span class="phaseWhen">First store · Wks 11+</span></div>
+        <div class="phaseDesc">We take it offline. <b>The first store opens as an event</b> — a launch night, pop-up moments and press, designed to be photographed and shared. Buyers become a community, and the whole engine becomes the launchpad for every shop that follows.</div>
+        <div class="chans"><span class="chan">First-store launch</span><span class="chan">Opening event</span><span class="chan">Press &amp; PR</span><span class="chan">Community</span></div>
+      </div>
+    </div>
+
+    <div class="alwaysOn r">
+      <div class="ao-k">Always on —</div>
+      <div class="ao-v">Community management, trend tracking, analytics and iteration run continuously through every phase, never paused. We watch what works and double down on it in real time.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSE -->
+<section id="close">
+  <div class="wrap">
+    <div class="eyebrow r" style="justify-content:center;">Let's Begin</div>
+    <div class="closeQuote r r2">This brand deserves an entrance worthy of its <span class="ital em1">taste.</span><br>Let's build it — <span class="ital em2">loudly.</span></div>
+    <p class="closeSub r r3">I take on a small number of brands at a time so each one gets real direction. If this is the launch you want, let's talk.</p>
+    <div class="sign r r4">
+      <div>
+        <div class="b">Parviz Mirzaei</div>
+        <div class="m">Creative Director &amp; Media Designer<br><a href="https://parviz.work/" target="_blank" rel="noopener">parviz.work</a> · <a href="mailto:parviz.mirzaei@outlook.com">parviz.mirzaei@outlook.com</a></div>
+      </div>
+      <div>
+        <div class="b">Sonuvo Lifestyle</div>
+        <div class="m">Interior Design Studio<br><a href="https://www.sonuvolifestyle.com" target="_blank" rel="noopener">sonuvolifestyle.com</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>Sonuvo Lifestyle · Parviz Mirzaei · 2026</footer>
+
+<script>
+// custom cursor
+const cur=document.getElementById('cursor');
+let cx=0,cy=0,tx=0,ty=0;
+window.addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY;});
+(function loop(){cx+=(tx-cx)*0.18;cy+=(ty-cy)*0.18;cur.style.transform=`translate(${cx}px,${cy}px)`;requestAnimationFrame(loop);})();
+document.querySelectorAll('a,.tile,.chip,.dot,.chan').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cur.classList.add('big'));
+  el.addEventListener('mouseleave',()=>cur.classList.remove('big'));
+});
+
+// progress
+const pf=document.getElementById('progFill');
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  pf.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+},{passive:true});
+
+// hero scribble-writing entrance
+window.addEventListener('load',()=>{
+  const hero=document.getElementById('hero');
+  hero.classList.add('draw');
+  hero.querySelector('.crest').classList.add('go');
+  hero.querySelector('.heroSub').classList.add('go');
+});
+
+// reveal on scroll
+const ro=new IntersectionObserver((es)=>{
+  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target);}});
+},{threshold:0.18});
+document.querySelectorAll('.r').forEach(el=>ro.observe(el));
+
+const po=new IntersectionObserver((es)=>{
+  es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});
+},{threshold:0.4});
+document.querySelectorAll('.phase').forEach(el=>po.observe(el));
+
+// timeline fill
+const tl=document.querySelector('.timeline');const tlFill=document.getElementById('tlFill');
+function fillTimeline(){
+  if(!tl)return;const r=tl.getBoundingClientRect();const vh=window.innerHeight;
+  const total=r.height;const passed=Math.min(Math.max(vh*0.6-r.top,0),total);
+  tlFill.style.height=(passed/total*100)+'%';
+}
+window.addEventListener('scroll',fillTimeline,{passive:true});
+window.addEventListener('resize',fillTimeline);fillTimeline();
+
+// ghost parallax
+const ghosts=[...document.querySelectorAll('.ghostNum')];
+window.addEventListener('scroll',()=>{
+  ghosts.forEach(g=>{const r=g.parentElement.getBoundingClientRect();g.style.transform=`translateY(${r.top*-0.08}px)`;});
+},{passive:true});
+
+// side nav
+const dots=document.querySelectorAll('.dot');
+dots.forEach(d=>d.addEventListener('click',()=>document.getElementById(d.dataset.t).scrollIntoView({behavior:'smooth'})));
+const navObs=new IntersectionObserver((es)=>{
+  es.forEach(e=>{if(e.isIntersecting){
+    dots.forEach(d=>d.classList.remove('active'));
+    const m=document.querySelector(`.dot[data-t="${e.target.id}"]`);if(m)m.classList.add('active');
+  }});
+},{threshold:0.5});
+['hero','intro','work','opportunity','strategy','launch','close'].forEach(id=>{
+  const el=document.getElementById(id);if(el)navObs.observe(el);
+});
+
+// hero pointer parallax
+const hero=document.getElementById('hero');
+hero.addEventListener('mousemove',e=>{
+  const x=(e.clientX/window.innerWidth-0.5),y=(e.clientY/window.innerHeight-0.5);
+  const h1=hero.querySelector('h1');if(h1)h1.style.transform=`translate(${x*8}px,${y*6}px)`;
+});
+hero.addEventListener('mouseleave',()=>{const h1=hero.querySelector('h1');if(h1)h1.style.transform='';});
+</script>
+</body>
+</html>
